@@ -13,12 +13,12 @@ let printMe s = printfn "%s" s
 
 let getTopic (argv : string []) = 
     match argv.Length with
-    | len when len > 1 -> argv.[1]
+    | len when len > 0 -> argv.[0]
     | _ -> failwithf "topic sux"
 
 let getRouter (argv : string []) = 
     match argv.Length with
-    | len when len > 2 -> new BrokerRouter(new KafkaOptions(new Uri(argv.[2])))
+    | len when len > 1 -> new BrokerRouter(new KafkaOptions(new Uri(argv.[1])))
     | _ -> failwithf "url sux"
 
 let produceWith (producer : Producer) topic messages = 
@@ -35,7 +35,7 @@ let produceWith (producer : Producer) topic messages =
 [<EntryPoint>]
 let main argv = 
     let input = 
-        if argv.Length = 1 then File.OpenRead argv.[0] :> Stream
+        if argv.Length = 3 then File.OpenRead argv.[2] :> Stream
         else Console.OpenStandardInput()
     
     let topic = getTopic argv
