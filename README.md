@@ -1,6 +1,14 @@
 # fsharp-kafka-simple
 A simple implementation of a Kafka producer and consumer in F#
 
+execute the following to build it in Docker:
+
+```shell
+git clone https://github.com/anaerobic/fsharp-kafka-simple.git
+cd fsharp-kafka-simple
+sudo sh docker-build.sh
+```
+
 Spin up Kafka with the following:
 
 ```shell
