@@ -11,7 +11,7 @@ let getTopic (argv : string []) =
     | len when len > 0 -> argv.[0]
     | _ -> failwithf "topic sux"
 
-let getKafkaUri (argv : string []) = 
+let getRouter (argv : string []) = 
     match argv.Length with
     | len when len > 1 -> new BrokerRouter(new KafkaOptions(new Uri(argv.[1])))
     | _ -> failwithf "url sux"
@@ -19,8 +19,8 @@ let getKafkaUri (argv : string []) =
 [<EntryPoint>]
 let main argv = 
     let topic = getTopic argv
-    let kafkaUri = getKafkaUri argv
-    let consumer = new KafkaNet.Consumer(new ConsumerOptions(topic, kafkaUri))
+    let router = getRouter argv
+    let consumer = new KafkaNet.Consumer(new ConsumerOptions(topic, router))
     consumer.SetOffsetPosition(new OffsetPosition(0, 0L))
     for message in consumer.Consume() do
         message.Value

@@ -16,6 +16,11 @@ let getTopic (argv : string []) =
     | len when len > 1 -> argv.[1]
     | _ -> failwithf "topic sux"
 
+let getRouter (argv : string []) = 
+    match argv.Length with
+    | len when len > 2 -> new BrokerRouter(new KafkaOptions(new Uri(argv.[2])))
+    | _ -> failwithf "url sux"
+
 let produceWith (producer : Producer) topic messages = 
     try 
         producer.SendMessageAsync(topic, messages)
@@ -34,8 +39,8 @@ let main argv =
         else Console.OpenStandardInput()
     
     let topic = getTopic argv
-    let producer = 
-        new Producer(new BrokerRouter(new KafkaOptions(new Uri(ConfigurationManager.AppSettings.Item("KafkaUrl")))))
+    let router = getRouter argv
+    let producer = new Producer(router)
     try 
         loadLines input
         |> Seq.map (fun x -> new Message(x))
