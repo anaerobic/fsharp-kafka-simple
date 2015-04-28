@@ -24,5 +24,5 @@ docker run --rm generate-race 5000 3 | docker run -i --rm streaming-fsharp | doc
 And you can read it back using:
 
 ```shell
-docker run -i --rm --net host fsharp-kafka-consumer results1 http://kafka.lacolhost.com:9092
+docker run -i --rm --net host fsharp-kafka-consumer results http://kafka.lacolhost.com:9092
 ```
