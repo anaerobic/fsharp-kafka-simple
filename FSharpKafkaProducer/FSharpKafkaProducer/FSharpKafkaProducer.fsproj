@@ -57,7 +57,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <Content Include="packages.config" />
-    <Compile Include="StreamStuff.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>

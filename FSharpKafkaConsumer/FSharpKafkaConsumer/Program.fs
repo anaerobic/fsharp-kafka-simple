@@ -26,4 +26,4 @@ let main argv =
         message.Value
         |> encoding.GetString
         |> printMe
-    0 // return an integer exit code
+    0

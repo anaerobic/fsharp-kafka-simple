@@ -7,7 +7,6 @@ open System.Configuration
 open System.IO
 open System.Reactive.Concurrency
 open System.Threading
-open StreamStuff
 
 let printMe s = printfn "%s" s
 
@@ -32,21 +31,20 @@ let produceWith (producer : Producer) topic messages =
             ix.InnerException.Message |> printMe
     | ex -> printMe ex.Message
 
+let rec readLine callback = 
+    let line = Console.ReadLine()
+    if (line <> null) then 
+        callback line
+        readLine callback
+
 [<EntryPoint>]
 let main argv = 
-    let input = 
-        if argv.Length = 3 then File.OpenRead argv.[2] :> Stream
-        else Console.OpenStandardInput()
-    
     let topic = getTopic argv
     let router = getRouter argv
     let producer = new Producer(router)
     try 
-        loadLines input
-        |> Seq.map (fun x -> new Message(x))
-        |> produceWith producer topic
+        readLine (fun x -> [ new Message(x) ] |> produceWith producer topic)
     finally
         producer.Dispose()
-    printfn "Done"
     if argv.Length = 1 then Console.ReadKey() |> ignore
     0 // return an integer exit code
