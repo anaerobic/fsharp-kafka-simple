@@ -26,7 +26,13 @@ Add the following to your /etc/hosts on the machine hosting the fsharp-kafka-pro
 Now you can stream data into Kafka (from https://github.com/anaerobic/generaterace.git , for instance) using something like:
 
 ```shell
-docker run --rm generate-race 5000 3 | docker run -i --rm streaming-fsharp | docker run -i --rm --net host fsharp-kafka-producer results http://kafka.lacolhost.com:9092
+docker run --rm generate-race 5000 3 | docker run -i --rm --net host fsharp-kafka-producer reads http://kafka.lacolhost.com:9092
+```
+
+We can stream that data out of Kafka and into another microservice, then stream the results back into Kafka like:
+
+```shell
+docker run --rm --net host fsharp-kafka-consumer reads http://kafka.lacolhost.com:9092 | docker run -i --rm streaming-fsharp | docker run -i --rm --net host fsharp-kafka-producer results http://kafka.lacolhost.com:9092
 ```
 
 And you can read it back using:
